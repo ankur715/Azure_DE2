@@ -1,0 +1,10 @@
+{
+  "linkedServiceName": {
+    "referenceName": "LS_NypaRestApi",
+    "type": "LinkedServiceReference"
+  },
+  "type": "RestResource",
+  "typeProperties": {
+    "relativeUrl": "resource/2x8p-pewm.json?$limit=5000"
+  }
+}

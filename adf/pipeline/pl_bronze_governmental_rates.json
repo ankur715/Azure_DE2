@@ -1,0 +1,65 @@
+{
+  "activities": [
+    {
+      "name": "LookupWatermark",
+      "type": "Lookup",
+      "typeProperties": {
+        "source": {
+          "type": "AzureSqlSource",
+          "sqlReaderQuery": "SELECT WatermarkValue FROM dbo.watermark WHERE TableName = 'governmental_rates'"
+        },
+        "dataset": { "referenceName": "DS_Sql_Watermark", "type": "DatasetReference" },
+        "firstRowOnly": true
+      }
+    },
+    {
+      "name": "CopyGovernmentalRatesToBronze",
+      "type": "Copy",
+      "dependsOn": [
+        { "activity": "LookupWatermark", "dependencyConditions": ["Succeeded"] }
+      ],
+      "typeProperties": {
+        "source": {
+          "type": "AzureSqlSource",
+          "sqlReaderQuery": {
+            "value": "SELECT * FROM dbo.governmental_rates WHERE data_as_of > '@{activity('LookupWatermark').output.firstRow.WatermarkValue}'",
+            "type": "Expression"
+          }
+        },
+        "sink": {
+          "type": "ParquetSink",
+          "storeSettings": { "type": "AzureBlobFSWriteSettings" }
+        }
+      },
+      "inputs": [
+        { "referenceName": "DS_Sql_GovernmentalRates", "type": "DatasetReference" }
+      ],
+      "outputs": [
+        {
+          "referenceName": "DS_Bronze_GovernmentalRates",
+          "type": "DatasetReference",
+          "parameters": {
+            "runDate": "@formatDateTime(utcnow(), 'yyyy-MM-dd')"
+          }
+        }
+      ]
+    },
+    {
+      "name": "UpdateWatermark",
+      "type": "Script",
+      "linkedServiceName": { "referenceName": "LS_AzureSqlDb", "type": "LinkedServiceReference" },
+      "dependsOn": [
+        { "activity": "CopyGovernmentalRatesToBronze", "dependencyConditions": ["Succeeded"] }
+      ],
+      "typeProperties": {
+        "scripts": [
+          {
+            "type": "Query",
+            "text": "UPDATE dbo.watermark SET WatermarkValue = (SELECT MAX(data_as_of) FROM dbo.governmental_rates) WHERE TableName = 'governmental_rates'"
+          }
+        ]
+      }
+    }
+  ],
+  "annotations": ["nypa", "bronze", "db-source", "incremental"]
+}

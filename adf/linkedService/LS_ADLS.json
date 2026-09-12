@@ -1,0 +1,6 @@
+{
+  "type": "AzureBlobFS",
+  "typeProperties": {
+    "url": "https://nypade2dls32tf2h3w4elwi.dfs.core.windows.net"
+  }
+}
