@@ -23,6 +23,7 @@ var dataFactoryName = '${namePrefix}-adf'
 var sqlServerName = toLower('${namePrefix}-sql3-${uniqueString(resourceGroup().id)}')
 var sqlDbName = 'nypa_rates'
 var databricksWorkspaceName = '${namePrefix}-dbx'
+var keyVaultName = toLower('${namePrefix}-kv-${uniqueString(resourceGroup().id)}')
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
@@ -112,7 +113,32 @@ resource databricksWorkspace 'Microsoft.Databricks/workspaces@2024-05-01' = {
   }
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    tenantId: subscription().tenantId
+    sku: { family: 'A', name: 'standard' }
+    enableRbacAuthorization: true
+  }
+}
+
+// Let ADF's managed identity read secrets (e.g. the SQL admin password) out of the vault
+resource kvSecretsUserForAdf 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, dataFactory.id, 'KeyVaultSecretsUser')
+  scope: keyVault
+  properties: {
+    principalId: dataFactory.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '4633458b-17de-408a-b874-0445c86b69e6' // Key Vault Secrets User
+    )
+  }
+}
+
 output storageAccountName string = storage.name
 output dataFactoryName string = dataFactory.name
 output sqlServerFqdn string = sqlServer.properties.fullyQualifiedDomainName
 output databricksWorkspaceUrl string = databricksWorkspace.properties.workspaceUrl
+output keyVaultName string = keyVault.name

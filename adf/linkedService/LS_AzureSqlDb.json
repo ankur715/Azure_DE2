@@ -1,0 +1,14 @@
+{
+  "type": "AzureSqlDatabase",
+  "typeProperties": {
+    "connectionString": "Data Source=<SQL_SERVER_FQDN>;Initial Catalog=nypa_rates;User ID=<SQL_ADMIN_LOGIN>;",
+    "password": {
+      "type": "AzureKeyVaultSecret",
+      "store": {
+        "referenceName": "LS_AzureKeyVault",
+        "type": "LinkedServiceReference"
+      },
+      "secretName": "sql-admin-password"
+    }
+  }
+}

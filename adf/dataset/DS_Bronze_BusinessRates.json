@@ -1,0 +1,24 @@
+{
+  "linkedServiceName": {
+    "referenceName": "LS_ADLS",
+    "type": "LinkedServiceReference"
+  },
+  "parameters": {
+    "runDate": {
+      "type": "string",
+      "defaultValue": "1970-01-01"
+    }
+  },
+  "type": "Json",
+  "typeProperties": {
+    "location": {
+      "type": "AzureBlobFSLocation",
+      "fileSystem": "bronze",
+      "folderPath": {
+        "value": "business_rates/ingest_date=@{dataset().runDate}",
+        "type": "Expression"
+      },
+      "fileName": "business_rates.json"
+    }
+  }
+}

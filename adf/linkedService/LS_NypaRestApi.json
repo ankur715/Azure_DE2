@@ -1,0 +1,8 @@
+{
+  "type": "RestService",
+  "typeProperties": {
+    "url": "https://data.ny.gov",
+    "authenticationType": "Anonymous",
+    "enableServerCertificateValidation": true
+  }
+}

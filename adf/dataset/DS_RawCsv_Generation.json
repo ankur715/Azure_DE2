@@ -1,0 +1,17 @@
+{
+  "linkedServiceName": {
+    "referenceName": "LS_ADLS",
+    "type": "LinkedServiceReference"
+  },
+  "type": "DelimitedText",
+  "typeProperties": {
+    "location": {
+      "type": "AzureBlobFSLocation",
+      "fileSystem": "raw-csv",
+      "fileName": "nypa_net_generation.csv"
+    },
+    "columnDelimiter": ",",
+    "firstRowAsHeader": true
+  },
+  "schema": []
+}

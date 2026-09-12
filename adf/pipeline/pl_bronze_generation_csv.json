@@ -1,0 +1,33 @@
+{
+  "activities": [
+    {
+      "name": "CopyGenerationToBronze",
+      "type": "Copy",
+      "typeProperties": {
+        "source": {
+          "type": "DelimitedTextSource",
+          "storeSettings": { "type": "AzureBlobFSReadSettings" },
+          "formatSettings": { "type": "DelimitedTextReadSettings" }
+        },
+        "sink": {
+          "type": "ParquetSink",
+          "storeSettings": { "type": "AzureBlobFSWriteSettings" }
+        },
+        "enableStaging": false
+      },
+      "inputs": [
+        { "referenceName": "DS_RawCsv_Generation", "type": "DatasetReference" }
+      ],
+      "outputs": [
+        {
+          "referenceName": "DS_Bronze_Generation",
+          "type": "DatasetReference",
+          "parameters": {
+            "runDate": "@formatDateTime(utcnow(), 'yyyy-MM-dd')"
+          }
+        }
+      ]
+    }
+  ],
+  "annotations": ["nypa", "bronze", "csv-source"]
+}

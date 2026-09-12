@@ -1,0 +1,11 @@
+{
+  "linkedServiceName": {
+    "referenceName": "LS_AzureSqlDb",
+    "type": "LinkedServiceReference"
+  },
+  "type": "AzureSqlTable",
+  "typeProperties": {
+    "schema": "dbo",
+    "table": "watermark"
+  }
+}
