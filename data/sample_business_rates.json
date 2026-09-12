@@ -1,0 +1,161 @@
+[
+  {
+    "customer_type": "Utilities, Municipal and Cooperative Systems and Public Entities",
+    "demand_price_kw": "4.07",
+    "energy_price_mills_kwh": "4.92",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "12.88",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Aluminum Company of America",
+    "energy_price_mills_kwh": "42",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "St. Lawrence Seaway Development Corporation and New York State Office of Parks, Recreation and Historic Preservation",
+    "energy_price_mills_kwh": "10",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Preservation Power",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "13.33",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "28.59",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Hydro Power",
+    "nyiso_zone": "A-E",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "21.05",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "36.31",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Hydro Power",
+    "nyiso_zone": "F",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "31.46",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "46.72",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Hydro Power",
+    "nyiso_zone": "G-I",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "34.05",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "49.31",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Hydro Power",
+    "nyiso_zone": "J",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "45.95",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "61.21",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Hydro Power",
+    "nyiso_zone": "K",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "42.94",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "58.2",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Blended Power",
+    "nyiso_zone": "A-E",
+    "demand_price_kw": "3.9",
+    "energy_price_mills_kwh": "30.01",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "37.64",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Blended Power",
+    "nyiso_zone": "F",
+    "demand_price_kw": "3.9",
+    "energy_price_mills_kwh": "39.87",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "47.5",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Blended Power",
+    "nyiso_zone": "G-I",
+    "demand_price_kw": "3.9",
+    "energy_price_mills_kwh": "43.65",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "51.28",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Blended Power",
+    "nyiso_zone": "J",
+    "demand_price_kw": "3.9",
+    "energy_price_mills_kwh": "58.92",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "66.55",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale ReCharge New York - Blended Power",
+    "nyiso_zone": "K",
+    "demand_price_kw": "3.9",
+    "energy_price_mills_kwh": "52.54",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "60.17",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Wholesale ReCharge New York - Hydro Power",
+    "nyiso_zone": "E",
+    "demand_price_kw": "7.8",
+    "energy_price_mills_kwh": "13.33",
+    "composite_price_load_factor_": "0.75",
+    "composite_price_mills_kwh": "27.58",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale Western New York",
+    "demand_price_kw": "8.14",
+    "energy_price_mills_kwh": "13.93",
+    "composite_price_load_factor_": "0.8",
+    "composite_price_mills_kwh": "27.87",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Direct Sale Western New York - 2",
+    "demand_price_kw": "7.45",
+    "energy_price_mills_kwh": "12.75",
+    "composite_price_load_factor_": "0.8",
+    "composite_price_mills_kwh": "25.51",
+    "data_as_of": "2021-10-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Utilities, Municipal and Cooperative Systems and Public Entities",
+    "demand_price_kw": "4.07",
+    "energy_price_mills_kwh": "4.92",
+    "composite_price_load_factor_": "0.7",
+    "composite_price_mills_kwh": "12.88",
+    "data_as_of": "2022-01-31T00:00:00.000"
+  },
+  {
+    "customer_type": "Aluminum Company of America",
+    "energy_price_mills_kwh": "42",
+    "data_as_of": "2022-01-31T00:00:00.000"
+  },
+  {
+    "customer_type": "St. Lawrence Seaway Development Corporation and New York State Office of Parks, Recreation and Historic Preservation",
+    "energy_price_mills_kwh": "10",
+    "data_as_of": "2022-01-31T00:00:00.000"
+  }
+]
