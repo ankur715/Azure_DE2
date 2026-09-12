@@ -5,8 +5,11 @@
 @description('Short prefix for all resource names, e.g. nypade2')
 param namePrefix string = 'nypade2'
 
-@description('Azure region')
+@description('Azure region for most resources')
 param location string = resourceGroup().location
+
+@description('Azure region for the SQL server — separate because some regions periodically stop accepting new SQL server creation. eastus/eastus2/westus2/southcentralus were all blocked at deploy time; centralus worked.')
+param sqlLocation string = 'centralus'
 
 @description('SQL admin login')
 param sqlAdminLogin string = 'sqladmin'
@@ -17,7 +20,7 @@ param sqlAdminPassword string
 
 var storageAccountName = toLower('${namePrefix}dls${uniqueString(resourceGroup().id)}')
 var dataFactoryName = '${namePrefix}-adf'
-var sqlServerName = toLower('${namePrefix}-sql-${uniqueString(resourceGroup().id)}')
+var sqlServerName = toLower('${namePrefix}-sql3-${uniqueString(resourceGroup().id)}')
 var sqlDbName = 'nypa_rates'
 var databricksWorkspaceName = '${namePrefix}-dbx'
 
@@ -66,7 +69,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
 
 resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
   name: sqlServerName
-  location: location
+  location: sqlLocation
   properties: {
     administratorLogin: sqlAdminLogin
     administratorLoginPassword: sqlAdminPassword
@@ -77,7 +80,7 @@ resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
 resource sqlDb 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
   parent: sqlServer
   name: sqlDbName
-  location: location
+  location: sqlLocation
   sku: {
     name: 'Basic'
     tier: 'Basic'
