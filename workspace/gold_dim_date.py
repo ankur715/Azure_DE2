@@ -3,7 +3,7 @@
 # dates seen in supply_rates, so both facts can join to it.
 from pyspark.sql import functions as F
 
-STORAGE = "nypade2dls32tf2h3w4elwi"
+STORAGE = "<STORAGE_ACCOUNT_NAME>"
 gold_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_date/"
 
 # COMMAND ----------

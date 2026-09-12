@@ -3,7 +3,7 @@
 # in silver_rates.py, joined to dim_customer_type and dim_date.
 from pyspark.sql import functions as F
 
-STORAGE = "nypade2dls32tf2h3w4elwi"
+STORAGE = "<STORAGE_ACCOUNT_NAME>"
 silver_path = f"abfss://silver@{STORAGE}.dfs.core.windows.net/supply_rates/"
 dim_customer_type_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_customer_type/"
 dim_date_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_date/"

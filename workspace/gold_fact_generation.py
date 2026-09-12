@@ -2,7 +2,7 @@
 # Gold: fact_generation — net generation by facility/year, joined to dim_facility.
 from pyspark.sql import functions as F
 
-STORAGE = "nypade2dls32tf2h3w4elwi"
+STORAGE = "<STORAGE_ACCOUNT_NAME>"
 silver_path = f"abfss://silver@{STORAGE}.dfs.core.windows.net/generation/"
 dim_facility_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_facility/"
 gold_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/fact_generation/"

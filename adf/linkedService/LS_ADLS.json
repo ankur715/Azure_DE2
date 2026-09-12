@@ -1,6 +1,6 @@
 {
   "type": "AzureBlobFS",
   "typeProperties": {
-    "url": "https://nypade2dls32tf2h3w4elwi.dfs.core.windows.net"
+    "url": "https://<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net"
   }
 }

@@ -5,7 +5,7 @@
 
 from pyspark.sql import functions as F
 
-bronze_path = "abfss://bronze@nypade2dls32tf2h3w4elwi.dfs.core.windows.net/generation/"
+bronze_path = "abfss://bronze@<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net/generation/"
 
 df = spark.read.parquet(bronze_path)
 
@@ -21,7 +21,7 @@ silver_df = (
 
 # COMMAND ----------
 
-silver_path = "abfss://silver@nypade2dls32tf2h3w4elwi.dfs.core.windows.net/generation/"
+silver_path = "abfss://silver@<STORAGE_ACCOUNT_NAME>.dfs.core.windows.net/generation/"
 silver_df.write.format("delta").mode("overwrite").save(silver_path)
 
 display(silver_df)

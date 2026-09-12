@@ -1,6 +1,6 @@
 {
   "type": "AzureKeyVault",
   "typeProperties": {
-    "baseUrl": "https://nypade2-kv-32tf2h3w4elwi.vault.azure.net/"
+    "baseUrl": "https://<KEY_VAULT_NAME>.vault.azure.net/"
   }
 }

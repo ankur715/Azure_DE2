@@ -1,7 +1,7 @@
 {
   "type": "AzureSqlDatabase",
   "typeProperties": {
-    "connectionString": "Data Source=nypade2-sql3-32tf2h3w4elwi.database.windows.net;Initial Catalog=nypa_rates;User ID=sqladmin;",
+    "connectionString": "Data Source=<SQL_SERVER_FQDN>;Initial Catalog=nypa_rates;User ID=<SQL_ADMIN_LOGIN>;",
     "password": {
       "type": "AzureKeyVaultSecret",
       "store": {

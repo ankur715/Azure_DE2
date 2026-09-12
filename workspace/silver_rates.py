@@ -3,7 +3,7 @@
 # business rates) into one shape so gold can treat them as a single fact.
 from pyspark.sql import functions as F
 
-STORAGE = "nypade2dls32tf2h3w4elwi"
+STORAGE = "<STORAGE_ACCOUNT_NAME>"
 bronze_gov_path = f"abfss://bronze@{STORAGE}.dfs.core.windows.net/governmental_rates/"
 bronze_biz_path = f"abfss://bronze@{STORAGE}.dfs.core.windows.net/business_rates/"
 

@@ -4,7 +4,7 @@
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-STORAGE = "nypade2dls32tf2h3w4elwi"
+STORAGE = "<STORAGE_ACCOUNT_NAME>"
 silver_path = f"abfss://silver@{STORAGE}.dfs.core.windows.net/supply_rates/"
 gold_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_customer_type/"
 
