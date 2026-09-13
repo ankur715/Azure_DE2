@@ -137,6 +137,8 @@ pr:
   branches:
     include: [main]
 
+pool: 'Default'   # self-hosted — see "New-org compute quota" below
+
 stages:
   - stage: Validate            # runs on every PR targeting main
       - az bicep build infra/monitoring.bicep
@@ -154,17 +156,43 @@ stages:
 2. Created `feature/add-resource-tags`, added `tags` (project/managedBy) to the
    Log Analytics workspace resource, pushed the branch.
 3. Opened PR #1 (`feature/add-resource-tags` → `main`) via `az repos pr create`.
-4. Queued the **Validate** stage build against PR #1.
+4. **Validate** stage ran against the real `nypa-de2-rg` resource group —
+   `az bicep build` compiled the template, `az deployment group validate`
+   confirmed it deploys cleanly. Passed.
+5. Completed/merged PR #1 into `main`.
+6. The merge auto-triggered a new run; its **Deploy** stage ran
+   `az deployment group create` for real.
+7. Confirmed independently via `az monitor log-analytics workspace show`:
+   `nypade2-logs` exists in `nypa-de2-rg`, `provisioningState: Succeeded`,
+   tagged `project=nypa-energy-pipeline`, `managedBy=azure-devops-cicd`.
 
-Steps 5+ (Validate completing, merging the PR, the Deploy stage running for
-real against `nypa-de2-rg`) are in progress — this is a brand-new Azure DevOps
-organization, and Microsoft doesn't grant free Microsoft-hosted CI/CD minutes
-automatically to new orgs (an anti-abuse measure); the build is queued pending
-that grant. This section will be updated with the completed run once it clears.
+Two real problems came up and got fixed along the way, not glossed over:
+
+- **New-org compute quota**: this Azure DevOps organization has 0 free
+  Microsoft-hosted CI/CD parallel jobs by default (Microsoft requires a
+  verified billing method to unlock the free tier, even though usage itself
+  is free — an anti-abuse measure). Rather than add billing for a learning
+  project, the pipeline runs on a **self-hosted agent** instead — one free
+  self-hosted parallel job is available with no billing requirement at all.
+  A temporary agent was registered on a local machine, used to run both the
+  Validate and Deploy stages above, then fully deregistered and deleted
+  immediately afterward (`config.sh remove`, process killed, local files
+  removed) — nothing was left running or registered.
+- **First deploy attempt failed for a real reason**: `az deployment group
+  create` failed with `MissingSubscriptionRegistration` — the subscription
+  wasn't registered for `Microsoft.OperationalInsights` (the Log Analytics
+  resource provider) yet. Fixed with `az provider register --namespace
+  Microsoft.OperationalInsights`, then reran the Deploy stage, which
+  succeeded.
+
+Every one-time resource-access grant (the service connection, the self-hosted
+agent pool) required an explicit "Permit" click in the Azure DevOps UI the
+first time the pipeline touched it — a built-in safeguard, not a bug.
 
 ### Screenshots
 
-See `pics/` for screenshots of the process as they're captured.
+See `pics/` for screenshots of the pipeline run history and the completed
+Validate/Deploy stages.
 
 ## Repo layout
 
