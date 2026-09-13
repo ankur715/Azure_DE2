@@ -189,11 +189,6 @@ Every one-time resource-access grant (the service connection, the self-hosted
 agent pool) required an explicit "Permit" click in the Azure DevOps UI the
 first time the pipeline touched it — a built-in safeguard, not a bug.
 
-### Screenshots
-
-See `pics/` for screenshots of the pipeline run history and the completed
-Validate/Deploy stages.
-
 ## Repo layout
 
 | Path | Contents |
