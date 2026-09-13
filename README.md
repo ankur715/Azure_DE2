@@ -95,6 +95,77 @@ All read/write Delta (not raw parquet) between layers. They run as a single
 Databricks Job (`nypa_silver_gold_pipeline`) with task dependencies matching the
 medallion order, on serverless compute (no cluster spec needed).
 
+## Azure DevOps CI/CD
+
+A companion repo, [`nypa-cicd-demo`](https://dev.azure.com/pankur715/pankur715/_git/pankur715),
+demonstrates a real feature-branch → PR → main CI/CD workflow in Azure DevOps,
+gated by a pipeline that validates and deploys a small monitoring add-on (a Log
+Analytics workspace, `nypade2-logs`) into this project's actual `nypa-de2-rg`
+resource group — not a mocked target.
+
+```
+feature/add-resource-tags ──(push)──▶ PR into main ──▶ CI: Validate stage
+                                                          │  az bicep build
+                                                          │  az deployment group validate
+                                                          │  (dry run against nypa-de2-rg)
+                                                          ▼
+                                                     PR merged into main
+                                                          │
+                                                          ▼
+                                                 CD: Deploy stage
+                                                 az deployment group create
+                                                 (real deploy to nypa-de2-rg)
+```
+
+### Setup
+
+| Component | Detail |
+|---|---|
+| Organization / Project | `pankur715` |
+| Repo | Azure Repos Git, `pankur715` — separate from this GitHub repo by design (Azure DevOps and GitHub are different services; this keeps the CI/CD demo self-contained) |
+| Service connection | `nypa-arm-connection` — Azure Resource Manager, scoped to the `nypa-de2-rg` resource group only (least privilege — it can't touch anything else in the subscription), created via the ADO portal's automatic service-principal flow so no secret ever passed through this session |
+| Pipeline | `nypa-cicd-demo`, defined by `azure-pipelines.yml` in the companion repo |
+
+### Pipeline definition
+
+```yaml
+trigger:
+  branches:
+    include: [main]
+
+pr:
+  branches:
+    include: [main]
+
+stages:
+  - stage: Validate            # runs on every PR targeting main
+      - az bicep build infra/monitoring.bicep
+      - az deployment group validate -g nypa-de2-rg --template-file infra/monitoring.bicep
+
+  - stage: Deploy               # runs only on main, after a PR merges
+    dependsOn: Validate
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      - az deployment group create -g nypa-de2-rg --template-file infra/monitoring.bicep
+```
+
+### What was actually run
+
+1. Pushed `main` with the initial `infra/monitoring.bicep` + `azure-pipelines.yml`.
+2. Created `feature/add-resource-tags`, added `tags` (project/managedBy) to the
+   Log Analytics workspace resource, pushed the branch.
+3. Opened PR #1 (`feature/add-resource-tags` → `main`) via `az repos pr create`.
+4. Queued the **Validate** stage build against PR #1.
+
+Steps 5+ (Validate completing, merging the PR, the Deploy stage running for
+real against `nypa-de2-rg`) are in progress — this is a brand-new Azure DevOps
+organization, and Microsoft doesn't grant free Microsoft-hosted CI/CD minutes
+automatically to new orgs (an anti-abuse measure); the build is queued pending
+that grant. This section will be updated with the completed run once it clears.
+
+### Screenshots
+
+See `pics/` for screenshots of the process as they're captured.
+
 ## Repo layout
 
 | Path | Contents |
