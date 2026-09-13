@@ -10,7 +10,7 @@ gold_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/dim_facility/"
 # COMMAND ----------
 
 facilities = (
-    spark.read.parquet(silver_path)
+    spark.read.format("delta").load(silver_path)
     .select("facility_name")
     .distinct()
     .withColumn("facility_key", F.row_number().over(Window.orderBy("facility_name")))

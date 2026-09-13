@@ -11,6 +11,9 @@ param location string = resourceGroup().location
 @description('Azure region for the SQL server — separate because some regions periodically stop accepting new SQL server creation. eastus/eastus2/westus2/southcentralus were all blocked at deploy time; centralus worked.')
 param sqlLocation string = 'centralus'
 
+@description('Azure region for the Databricks workspace — separate because eastus had persistent cluster-compute capacity stockouts across multiple VM sizes (DS3_v2, D4s_v3, F4s_v2, D4_v2) at deploy time; centralus worked.')
+param databricksLocation string = 'centralus'
+
 @description('SQL admin login')
 param sqlAdminLogin string = 'sqladmin'
 
@@ -24,6 +27,7 @@ var sqlServerName = toLower('${namePrefix}-sql3-${uniqueString(resourceGroup().i
 var sqlDbName = 'nypa_rates'
 var databricksWorkspaceName = '${namePrefix}-dbx'
 var keyVaultName = toLower('${namePrefix}-kv-${uniqueString(resourceGroup().id)}')
+var accessConnectorName = '${namePrefix}-uc-connector'
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
@@ -103,7 +107,7 @@ resource sqlFirewallAzure 'Microsoft.Sql/servers/firewallRules@2023-05-01-previe
 
 resource databricksWorkspace 'Microsoft.Databricks/workspaces@2024-05-01' = {
   name: databricksWorkspaceName
-  location: location
+  location: databricksLocation
   sku: { name: 'premium' } // premium needed for Unity Catalog; pause/delete clusters when idle to protect the credit
   properties: {
     managedResourceGroupId: subscriptionResourceId(
@@ -137,8 +141,47 @@ resource kvSecretsUserForAdf 'Microsoft.Authorization/roleAssignments@2022-04-01
   }
 }
 
+// Lets Unity Catalog (and therefore serverless compute, which can't use raw storage
+// keys) read/write ADLS via a governed storage credential instead of a shared key.
+// Needed because this subscription's default 4-vCPU regional compute quota made
+// classic Databricks clusters unusable — serverless compute bypasses that quota.
+resource accessConnector 'Microsoft.Databricks/accessConnectors@2024-05-01' = {
+  name: accessConnectorName
+  location: databricksLocation
+  identity: { type: 'SystemAssigned' }
+}
+
+resource storageRoleForConnector 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storage.id, accessConnector.id, 'StorageBlobDataContributor')
+  scope: storage
+  properties: {
+    principalId: accessConnector.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      'ba92f5b4-2d11-453d-a403-e96b0029c9fe' // Storage Blob Data Contributor
+    )
+  }
+}
+
+// Unity Catalog requires the connector's own managed identity to have Reader on
+// itself before it will accept the identity when registering a storage credential.
+resource connectorReaderOnSelf 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(accessConnector.id, 'ReaderOnSelf')
+  scope: accessConnector
+  properties: {
+    principalId: accessConnector.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      'acdd72a7-3385-48ef-bd42-f606fba81ae7' // Reader
+    )
+  }
+}
+
 output storageAccountName string = storage.name
 output dataFactoryName string = dataFactory.name
 output sqlServerFqdn string = sqlServer.properties.fullyQualifiedDomainName
 output databricksWorkspaceUrl string = databricksWorkspace.properties.workspaceUrl
 output keyVaultName string = keyVault.name
+output accessConnectorId string = accessConnector.id

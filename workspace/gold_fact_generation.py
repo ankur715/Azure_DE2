@@ -9,7 +9,7 @@ gold_path = f"abfss://gold@{STORAGE}.dfs.core.windows.net/fact_generation/"
 
 # COMMAND ----------
 
-silver = spark.read.parquet(silver_path)
+silver = spark.read.format("delta").load(silver_path)
 dim_facility = spark.read.format("delta").load(dim_facility_path)
 
 fact_generation = (
