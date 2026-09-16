@@ -10,6 +10,17 @@ governed enterprise NL→SQL pipeline rather than a single LLM call: the LLM int
 question and drafts SQL; everything about whether that SQL is safe, authorized, and affordable
 to run is decided by code, not by asking the model nicely.
 
+## Screenshots
+
+<img src="../pics/chatbot_login.jpg" width="360" alt="Login screen">
+
+Signed in as `business_analyst`, asking real questions against the live warehouse — note the
+second answer: the row-level filter silently restricted the query to business-only data, and the
+model explained the gap in plain English on its own, without ever being told it was looking at a
+filtered view:
+
+![Chatbot in use, business_analyst role](../pics/chatbot_example.jpg)
+
 ## Architecture
 
 ```
