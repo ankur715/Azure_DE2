@@ -107,12 +107,18 @@ def validate_and_authorize(raw_sql: str, principal: Principal) -> ValidatedQuery
         tables_used.append(name)
 
     # Column allow-list: every column identifier that resolves to a known
-    # table must be one of that table's documented columns (best-effort —
-    # this catches hallucinated columns before they hit the warehouse as a
-    # confusing runtime error).
+    # table must be one of that table's documented columns, OR an alias the
+    # query itself defines in its SELECT list (e.g. `SUM(x) AS total`
+    # referenced later in ORDER BY/HAVING — a normal SQL pattern, not a
+    # hallucinated column). Best-effort: catches hallucinated *table*
+    # columns before they hit the warehouse as a confusing runtime error.
     known_columns = set()
     for t in tables_used:
         known_columns.update(TABLES[t]["columns"].keys())
+    output_aliases = {
+        alias_node.alias for alias_node in tree.selects if isinstance(alias_node, exp.Alias)
+    }
+    known_columns |= output_aliases
     for col in tree.find_all(exp.Column):
         col_name = col.name
         if col_name == "*":

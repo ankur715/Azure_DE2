@@ -21,7 +21,7 @@ Respond with ONLY a JSON array of domain names relevant to the question, e.g. ["
 
 
 def classify_domains(question: str) -> list[str]:
-    raw = complete(system=_SYSTEM, user=question, max_tokens=64)
+    raw = complete(system=_SYSTEM, user=question, max_tokens=128)
     try:
         domains = json.loads(raw)
     except json.JSONDecodeError:

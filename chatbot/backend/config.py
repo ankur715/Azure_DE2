@@ -2,6 +2,10 @@
 refuses to start without them, rather than silently falling back."""
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def _require(name: str) -> str:
     val = os.environ.get(name)
@@ -14,7 +18,7 @@ class Settings:
     # LLM (Google Gemini — has a real free tier, no payment method required to
     # start: https://aistudio.google.com/apikey. Swap providers by editing llm.py.)
     GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-    LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-2.5-flash")
+    LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3.6-flash")
 
     # Databricks SQL Warehouse (Unity Catalog gold tables)
     DATABRICKS_SERVER_HOSTNAME = os.environ.get("DATABRICKS_SERVER_HOSTNAME", "")

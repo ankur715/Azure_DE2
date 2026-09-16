@@ -36,7 +36,7 @@ def generate_sql(question: str, domains: list[str], conversation_context: str = 
     if conversation_context:
         user = f"Recent conversation:\n{conversation_context}\n\nNew question: {question}"
 
-    raw = complete(system=system, user=user, max_tokens=512)
+    raw = complete(system=system, user=user, max_tokens=768)
     # Strip markdown fences defensively in case the model adds them anyway.
     raw = re.sub(r"^```(sql)?", "", raw.strip(), flags=re.IGNORECASE).strip()
     raw = re.sub(r"```$", "", raw).strip()

@@ -18,4 +18,4 @@ def summarize(question: str, result: QueryResult, max_rows_shown: int = 50) -> s
             preview += f"\n(...and {result.row_count - max_rows_shown} more rows, truncated for this summary)"
 
     user = f"Question: {question}\n\nQuery result:\n{preview}"
-    return complete(system=_SYSTEM, user=user, max_tokens=400)
+    return complete(system=_SYSTEM, user=user, max_tokens=500)
