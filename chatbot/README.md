@@ -95,7 +95,7 @@ portfolio project.
 ### 1. Prerequisites already in place (from the main project)
 
 - Databricks workspace with `nypade2_dbx.gold.*` tables and a running/resumable SQL Warehouse
-- An Anthropic API key — get one at https://console.anthropic.com/settings/keys
+- A Gemini API key — free, no payment method required: https://aistudio.google.com/apikey
 
 ### 2. Install
 
@@ -113,7 +113,7 @@ cp .env.example .env
 
 Fill in `.env`:
 
-- `ANTHROPIC_API_KEY` — your key
+- `GEMINI_API_KEY` — your key
 - `DATABRICKS_SERVER_HOSTNAME` / `DATABRICKS_HTTP_PATH` — from the SQL Warehouse's
   "Connection details" tab in the Databricks UI
 - `DATABRICKS_TOKEN` — a personal access token (User Settings → Developer → Access tokens),
@@ -165,9 +165,9 @@ az containerapp create \
   --resource-group nypa-de2-rg \
   --image <your-acr-name>.azurecr.io/nypa-chatbot:latest \
   --target-port 8000 --ingress external \
-  --secrets anthropic-key=<value> jwt-secret=<value> dbx-token=<value> \
+  --secrets gemini-key=<value> jwt-secret=<value> dbx-token=<value> \
   --env-vars \
-    ANTHROPIC_API_KEY=secretref:anthropic-key \
+    GEMINI_API_KEY=secretref:gemini-key \
     JWT_SECRET=secretref:jwt-secret \
     DATABRICKS_TOKEN=secretref:dbx-token \
     DATABRICKS_SERVER_HOSTNAME=<hostname> \

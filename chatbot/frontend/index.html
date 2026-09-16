@@ -138,7 +138,12 @@
 </div>
 
 <script>
-const API_BASE = window.location.origin;
+// window.location.origin is the literal string "null" when this page is opened
+// as a local file:// (no server), which breaks fetch() with a confusing error.
+// Fall back to the backend's default local port in that case.
+const API_BASE = (window.location.origin && window.location.origin !== 'null')
+  ? window.location.origin
+  : 'http://localhost:8000';
 let token = null;
 let role = null;
 let sessionId = null;

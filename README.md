@@ -214,7 +214,7 @@ chat frontend; see its README for local and Azure Container Apps setup.
 ## Stack
 
 Azure Data Factory · ADLS Gen2 · Azure SQL Database · Azure Key Vault · Azure Databricks
-(serverless + Unity Catalog) · Delta Lake · PySpark · Bicep · FastAPI · Anthropic Claude
+(serverless + Unity Catalog) · Delta Lake · PySpark · Bicep · FastAPI · Google Gemini
 
 ## Status
 

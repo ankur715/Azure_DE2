@@ -11,9 +11,10 @@ def _require(name: str) -> str:
 
 
 class Settings:
-    # LLM (Anthropic Claude — swap provider by editing llm.py if you prefer another)
-    ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-    LLM_MODEL = os.environ.get("LLM_MODEL", "claude-sonnet-4-5")
+    # LLM (Google Gemini — has a real free tier, no payment method required to
+    # start: https://aistudio.google.com/apikey. Swap providers by editing llm.py.)
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+    LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-2.5-flash")
 
     # Databricks SQL Warehouse (Unity Catalog gold tables)
     DATABRICKS_SERVER_HOSTNAME = os.environ.get("DATABRICKS_SERVER_HOSTNAME", "")
@@ -34,7 +35,7 @@ class Settings:
     LOG_DB_PATH = os.environ.get("LOG_DB_PATH", "chatbot_audit_log.db")
 
     def validate(self) -> None:
-        _require("ANTHROPIC_API_KEY")
+        _require("GEMINI_API_KEY")
         _require("DATABRICKS_SERVER_HOSTNAME")
         _require("DATABRICKS_HTTP_PATH")
         if not (self.DATABRICKS_TOKEN or (self.DATABRICKS_CLIENT_ID and self.DATABRICKS_CLIENT_SECRET)):
