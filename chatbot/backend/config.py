@@ -18,7 +18,10 @@ class Settings:
     # LLM (Google Gemini — has a real free tier, no payment method required to
     # start: https://aistudio.google.com/apikey. Swap providers by editing llm.py.)
     GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-    LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3.6-flash")
+    # "-lite" models have separate, more generous free-tier daily quotas
+    # than flagship "flash" models (gemini-3.6-flash's free tier caps out
+    # at 20 requests/DAY, exhausted almost immediately with real testing).
+    LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3.1-flash-lite")
 
     # Databricks SQL Warehouse (Unity Catalog gold tables)
     DATABRICKS_SERVER_HOSTNAME = os.environ.get("DATABRICKS_SERVER_HOSTNAME", "")
@@ -34,7 +37,10 @@ class Settings:
 
     # Query cost guardrails
     MAX_RESULT_ROWS = int(os.environ.get("MAX_RESULT_ROWS", "500"))
-    QUERY_TIMEOUT_SECONDS = int(os.environ.get("QUERY_TIMEOUT_SECONDS", "30"))
+    # Applies to the connection socket, including the initial session-open —
+    # a serverless SQL Warehouse that's auto-stopped (idle 10+ min) can take
+    # well over 30s to resume, which read as a generic connection error.
+    QUERY_TIMEOUT_SECONDS = int(os.environ.get("QUERY_TIMEOUT_SECONDS", "120"))
 
     LOG_DB_PATH = os.environ.get("LOG_DB_PATH", "chatbot_audit_log.db")
 

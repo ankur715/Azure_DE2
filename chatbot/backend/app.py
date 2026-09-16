@@ -138,7 +138,7 @@ def chat(req: ChatRequest, principal: auth.Principal = Depends(get_principal)):
         entry.row_count = result.row_count
         entry.duration_ms = result.duration_ms
 
-        answer = responder.summarize(question, result)
+        answer = responder.summarize(question, result, domains)
         entry.status = "success"
         entry.answer = answer
         logging_store.log(entry)
