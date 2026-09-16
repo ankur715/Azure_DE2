@@ -79,6 +79,8 @@ just add a `job_clusters` block back to the job and point tasks at it.
 Bronze paths are date-partitioned (`.../ingest_date=yyyy-MM-dd/...`) so re-runs don't
 clobber prior loads.
 
+![pl_bronze_governmental_rates pipeline canvas — Lookup, Copy data, Script activities](pics/ingestion.jpg)
+
 ## Databricks notebooks (`workspace/`, mirrored to `/Shared/nypa_pipeline`)
 
 | Notebook | Output |
@@ -94,6 +96,8 @@ clobber prior loads.
 All read/write Delta (not raw parquet) between layers. They run as a single
 Databricks Job (`nypa_silver_gold_pipeline`) with task dependencies matching the
 medallion order, on serverless compute (no cluster spec needed).
+
+![Deployed notebooks in /Shared/nypa_pipeline](pics/databricks_transform.jpg)
 
 ## Azure DevOps CI/CD
 
