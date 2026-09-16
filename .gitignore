@@ -22,3 +22,7 @@ local.settings.json
 
 # Large local data pulls (keep only small samples committed)
 /data/raw/
+
+# Chatbot: local runtime artifacts, never committed
+chatbot/backend/chatbot_audit_log.db
+chatbot/backend/*.db

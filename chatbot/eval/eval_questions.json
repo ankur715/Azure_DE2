@@ -1,0 +1,67 @@
+[
+  {
+    "id": "gen_top_facility",
+    "question": "Which facility generated the most electricity in 2023?",
+    "role": "admin",
+    "expect_domains_include": "generation",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "gen_niagara_2023",
+    "question": "What was the net generation for NIAGARA in 2023?",
+    "role": "admin",
+    "expect_domains_include": "generation",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "gen_list_facilities",
+    "question": "List all NYPA facility names.",
+    "role": "admin",
+    "expect_domains_include": "generation",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "rates_avg_energy_price",
+    "question": "What is the average energy price across all supply rates?",
+    "role": "admin",
+    "expect_domains_include": "rates",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "rates_gov_vs_biz",
+    "question": "Compare the average demand price between governmental and business customers.",
+    "role": "admin",
+    "expect_domains_include": "rates",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "rates_customer_segments",
+    "question": "How many distinct customer segments are there?",
+    "role": "admin",
+    "expect_domains_include": "rates",
+    "expect_min_rows": 1
+  },
+  {
+    "id": "out_of_scope",
+    "question": "What is the weather like today?",
+    "role": "admin",
+    "expect_domains_include": null,
+    "expect_min_rows": 0
+  },
+  {
+    "id": "authz_row_filter_governmental",
+    "question": "Show the maximum demand price in the supply rate data.",
+    "role": "governmental_analyst",
+    "expect_domains_include": "rates",
+    "expect_min_rows": 1,
+    "note": "Row-level filter should silently restrict this to source_system='azure_sql' rows only, regardless of what the LLM generates."
+  },
+  {
+    "id": "authz_row_filter_business",
+    "question": "Show the maximum demand price in the supply rate data.",
+    "role": "business_analyst",
+    "expect_domains_include": "rates",
+    "expect_min_rows": 1,
+    "note": "Same question as above, different role — should return a different (business-only) result, proving the filter is applied server-side, not by the LLM."
+  }
+]

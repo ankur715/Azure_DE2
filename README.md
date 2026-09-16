@@ -189,6 +189,17 @@ Every one-time resource-access grant (the service connection, the self-hosted
 agent pool) required an explicit "Permit" click in the Azure DevOps UI the
 first time the pipeline touched it — a built-in safeguard, not a bug.
 
+## Analytics chatbot
+
+[`chatbot/`](chatbot/README.md) — a natural-language-to-SQL chatbot over the gold data model
+above (`nypade2_dbx.gold.*` in Databricks Unity Catalog). Modeled after the governed enterprise
+pattern in [ankur715/Web_App](https://github.com/ankur715/Web_App)'s Retail Sales Analytics
+Chatbot, but with the LLM's role deliberately narrowed to *interpreting the question and
+drafting SQL* — authentication, row-level authorization (governmental vs. business customers),
+SQL validation (parse, allow-list tables/columns, inject row filters, cap result size), and
+execution all happen in code the LLM never sees or controls. FastAPI backend + single-page
+chat frontend; see its README for local and Azure Container Apps setup.
+
 ## Repo layout
 
 | Path | Contents |
@@ -196,14 +207,14 @@ first time the pipeline touched it — a built-in safeguard, not a bug.
 | `infra/` | Bicep templates — resource group, ADLS Gen2, ADF, Azure SQL DB, Databricks, Key Vault, UC access connector |
 | `adf/` | Exported ADF linked service / dataset / pipeline JSON (placeholders for real resource names — see `adf/README.md`) |
 | `workspace/` | Databricks notebooks (source format) |
+| `chatbot/` | NL-to-SQL analytics chatbot (FastAPI backend + frontend) over the gold tables — see `chatbot/README.md` |
 | `scripts/` | Local helper scripts — pull NYPA sources, seed the SQL DB, init the watermark table, one-time Unity Catalog setup |
 | `data/` | Small sample extracts for local testing (full pulls are gitignored) |
-| `pics/` | Architecture diagrams / screenshots |
 
 ## Stack
 
 Azure Data Factory · ADLS Gen2 · Azure SQL Database · Azure Key Vault · Azure Databricks
-(serverless + Unity Catalog) · Delta Lake · PySpark · Bicep
+(serverless + Unity Catalog) · Delta Lake · PySpark · Bicep · FastAPI · Anthropic Claude
 
 ## Status
 
